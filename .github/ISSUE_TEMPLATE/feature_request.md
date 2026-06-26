@@ -1,19 +1,25 @@
 ---
-name: Feature request
-about: Suggest an idea for this project
+name: 💡 Feature request
+about: Suggest an idea or analyzer plugin for DevBrain
 title: 'feat: '
 labels: enhancement
 assignees: ''
 ---
 
-**Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+## Problem Statement
+Is your feature request related to a problem? Please describe it clearly. (e.g., "I am frustrated when scanning my Gradle project because...")
 
-**Describe the solution you'd like**
-A clear and concise description of what you want to happen.
+## Proposed Solution
+A clear and concise description of what you want to happen and how you envision this working.
 
-**Describe alternatives you've considered**
-A clear and concise description of any alternative solutions or features you've considered.
+## Technical Details (Optional)
+If suggesting a new analyzer plugin, please provide:
+- Target configuration files (e.g. `gradle.properties`, `package-lock.json`)
+- Relevant parsing rules (e.g. regex patterns, JSON paths, XML structures)
+- Expected generated documentation format
 
-**Additional context**
-Add any other context or screenshots about the feature request here.
+## Alternatives Considered
+A clear and concise description of any alternative solutions or workarounds you've considered.
+
+## Additional Context
+Add any other context, mockup designs, or examples about the feature request here.
