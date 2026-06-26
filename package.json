@@ -1,0 +1,29 @@
+{
+  "name": "devbrain",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "packages/*"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "clean": "node scripts/clean.js",
+    "build": "npm run clean && npm run build -w packages/shared && npm run build -w packages/core && npm run build -w packages/cli",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint \"packages/*/src/**/*.ts\"",
+    "format": "prettier --write \"packages/*/src/**/*.ts\""
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@typescript-eslint/eslint-plugin": "^7.3.1",
+    "@typescript-eslint/parser": "^7.3.1",
+    "eslint": "^8.57.0",
+    "prettier": "^3.2.5",
+    "typescript": "^5.4.3",
+    "vitest": "^4.1.9"
+  }
+}

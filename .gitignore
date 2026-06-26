@@ -1,0 +1,60 @@
+# Dependencies
+node_modules/
+
+# Production builds
+dist/
+packages/*/dist/
+
+# Test coverage
+coverage/
+
+# IDE / Editor configs
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS metadata
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Caches and build info
+.cache/
+*.tsbuildinfo
+packages/*/*.tsbuildinfo
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Temporary files
+*.tmp
+*.bak
+temp/
+tmp/
+verification-temp/
+
+# Packages/Tarballs
+*.tgz
+packages/*/*.tgz
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.ipynb_checkpoints/

@@ -1,0 +1,2 @@
+# Ignore source maps in publication
+**/*.map

@@ -1,0 +1,22 @@
+{
+  "extends": "./tsconfig.settings.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@devbrain/shared": ["packages/shared/src/index.ts"],
+      "@devbrain/core": ["packages/core/src/index.ts"]
+    }
+  },
+  "include": [
+    "vitest.config.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/dist"
+  ],
+  "references": [
+    { "path": "packages/shared" },
+    { "path": "packages/core" },
+    { "path": "packages/cli" }
+  ]
+}
