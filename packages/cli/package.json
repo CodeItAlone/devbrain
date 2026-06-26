@@ -19,7 +19,7 @@
     "url": "git+https://github.com/CodeItAlone/devbrain.git"
   },
   "license": "MIT",
-  "author": "DevBrain Authors (https://github.com/CodeItAlone/devbrain)",
+  "author": "Subrato Kundu (https://github.com/CodeItAlone/devbrain)",
   "type": "module",
   "main": "./dist/bin.js",
   "types": "./dist/bin.d.ts",
