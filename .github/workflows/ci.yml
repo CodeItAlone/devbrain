@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    name: Build & Test (Node ${{ matrix.node-version }})
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20.x, 22.x]
+      fail-fast: true
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Clean Repository
+        run: npm run clean
+
+      - name: Build Packages
+        run: npm run build
+
+      - name: Run Test Suite
+        run: npm test
+
+      - name: Run Linting Checks
+        run: npm run lint
+
+      - name: Type Check (tsc --noEmit)
+        run: npx tsc --noEmit
+
+      - name: Package CLI (npm pack)
+        working-directory: packages/cli
+        run: npm pack
+
+      - name: Verify Packaged CLI Functionality
+        run: node scripts/verify-release.js

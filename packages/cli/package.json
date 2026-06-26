@@ -10,16 +10,16 @@
     "memory",
     "offline"
   ],
-  "homepage": "TODO: Insert homepage URL",
+  "homepage": "https://github.com/CodeItAlone/devbrain#readme",
   "bugs": {
-    "url": "TODO: Insert issue tracker URL"
+    "url": "https://github.com/CodeItAlone/devbrain/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/TODO-repo-url.git"
+    "url": "git+https://github.com/CodeItAlone/devbrain.git"
   },
   "license": "MIT",
-  "author": "TODO: Insert author name and email",
+  "author": "DevBrain Authors (https://github.com/CodeItAlone/devbrain)",
   "type": "module",
   "main": "./dist/bin.js",
   "types": "./dist/bin.d.ts",
