@@ -5,7 +5,7 @@ DevBrain is an offline-first CLI tool designed to provide persistent, determinis
 ## Installation
 
 ```bash
-npm install -g devbrain
+npm install -g devbrain-cli
 ```
 
 ## Quick Start

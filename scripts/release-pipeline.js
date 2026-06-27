@@ -43,7 +43,7 @@ runCommand('node scripts/verify-release.js');
 
 // 8. Package Audit
 console.log('\n=== RUNNING PACKAGE AUDIT ===');
-const tarballName = 'devbrain-0.1.0.tgz';
+const tarballName = 'devbrain-cli-0.1.0.tgz';
 const tarballPath = join(cliDir, tarballName);
 
 if (!existsSync(tarballPath)) {

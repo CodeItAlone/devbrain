@@ -1,5 +1,5 @@
 {
-  "name": "devbrain",
+  "name": "devbrain-cli",
   "version": "0.1.0",
   "description": "Offline-first CLI tool providing persistent, deterministic project memory for AI assistants.",
   "keywords": [
