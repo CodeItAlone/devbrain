@@ -2,6 +2,9 @@
   "name": "@devbrain/core",
   "version": "0.1.0",
   "private": true,
+  "files": [
+    "dist"
+  ],
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -9,7 +12,9 @@
     "build": "tsc --build"
   },
   "dependencies": {
-    "@devbrain/shared": "^0.1.0",
+    "@devbrain/shared": "^0.1.0"
+  },
+  "devDependencies": {
     "fast-glob": "^3.3.2",
     "fast-xml-parser": "^5.9.3",
     "simple-git": "^3.23.0"

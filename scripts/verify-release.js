@@ -7,7 +7,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const rootDir = join(__dirname, '..');
 
-const tarballPath = join(rootDir, 'packages/cli/devbrain-0.1.0.tgz');
+const tarballPath = join(rootDir, 'packages/cli/devbrain-cli-0.1.0.tgz');
 const verifyDir = join(rootDir, 'verification-temp');
 const packageDir = join(verifyDir, 'package');
 const testAppDir = join(verifyDir, 'test-app');
@@ -31,7 +31,7 @@ try {
 
   console.log('1. Extracting tarball...');
   // Copy tarball to verify directory
-  const tempTarball = join(verifyDir, 'devbrain-0.1.0.tgz');
+  const tempTarball = join(verifyDir, 'devbrain-cli-0.1.0.tgz');
   execSync(`tar -xzf "${tarballPath}" -C "${verifyDir}"`);
 
   if (!existsSync(packageDir)) {

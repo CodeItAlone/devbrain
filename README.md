@@ -50,13 +50,13 @@ graph TD
 To install DevBrain globally, ensure you have Node.js LTS (>=20) installed:
 
 ```bash
-npm install -g devbrain
+npm install -g devbrain-cli
 ```
 
 Alternatively, you can run it on-demand using `npx`:
 
 ```bash
-npx devbrain --help
+npx devbrain-cli --help
 ```
 
 ---
