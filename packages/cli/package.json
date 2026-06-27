@@ -24,7 +24,7 @@
   "main": "./dist/bin.js",
   "types": "./dist/bin.d.ts",
   "bin": {
-    "devbrain": "./dist/bin.js"
+    "devbrain": "dist/bin.js"
   },
   "exports": {
     ".": {
@@ -50,7 +50,10 @@
     "@devbrain/shared": "^0.1.0",
     "commander": "^12.0.0",
     "chalk": "^5.3.0",
-    "ora": "^8.0.1"
+    "ora": "^8.0.1",
+    "fast-glob": "^3.3.2",
+    "fast-xml-parser": "^5.9.3",
+    "simple-git": "^3.23.0"
   },
   "bundleDependencies": [
     "@devbrain/core",
