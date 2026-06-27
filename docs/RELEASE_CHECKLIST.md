@@ -16,42 +16,26 @@ All releases must strictly adhere to Semantic Versioning (SemVer):
 
 ## 🏁 Pre-Release Verification
 
-Run the following checks locally prior to tagging a release. **Do not cut a release if any of these steps fail.**
+We use a unified, deterministic release pipeline script to compile, verify, test, package, and audit DevBrain prior to publishing. **Do not cut a release if any of these automated steps fail.**
 
-### 1. Code Quality checks
-Verify that lint checks, TS compilation, and test execution are completely clean:
+### Run the Release Pipeline
+From the root directory, execute the release pipeline:
 ```bash
-# Clean previous build artifacts
-npm run clean
-
-# Compile the packages
-npm run build
-
-# Run linting
-npm run lint
-
-# Compile and check type-safety
-npx tsc --noEmit
-
-# Run unit tests
-npm test
+npm run release
 ```
 
-### 2. Packaging Sanity Checks
-Ensure the CLI bundles the shared and core workspaces properly and runs correctly:
-```bash
-# Move to the CLI workspace folder
-cd packages/cli
+This automated command will execute the following verification steps in sequence:
+1. **Clean**: Deletes all previous build artifacts and compile states.
+2. **Build**: Compiles all workspace packages (`shared`, `core`, and `cli`).
+3. **Type Check**: Verifies type safety across all TypeScript sources (`npx tsc --noEmit`).
+4. **Unit Tests**: Runs the Vitest test suite (`npm test`).
+5. **Prepare CLI**: Bundles the core and shared packages into `packages/cli/node_modules/` via `scripts/prepare-cli.js`.
+6. **Package Tarball**: Generates the local npm package tarball under `packages/cli/` via `npm pack`.
+7. **Lifecycle Validation**: Runs `scripts/verify-release.js` which extracts the package, validates internal bundling, and runs `init`, `learn`, and `context` in a temporary test directory.
+8. **Error Trapping**: Runs `scripts/verify-error-handling.js` to ensure the CLI handles invalid states gracefully.
+9. **Analyzer Verification**: Runs `scripts/verify-functional-projects.js` to test language analyzers against Java, React, Node, Python, and empty projects.
+10. **Tarball Audit**: Performs static file analysis on the packed tarball to ensure no development directories (`.git`, `.agents`), test files (`*.test.ts`), or raw source files are included, and audits the final file count and package size.
 
-# Generate the npm package tarball locally (triggers prepack dependency bundling)
-npm pack
-
-# Return to root directory
-cd ../..
-
-# Run the release verification script to verify extraction, bundling, and CLI commands
-node scripts/verify-release.js
-```
 
 ---
 

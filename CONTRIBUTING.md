@@ -112,5 +112,5 @@ Before submitting your PR, please ensure you complete this checklist:
 - [ ] Code is formatted (`npm run format`) and linted (`npm run lint`).
 - [ ] Type checking passes cleanly (`npx tsc --noEmit`).
 - [ ] Unit tests are written for new logic and all tests pass (`npm test`).
-- [ ] Pre-release verification is completed successfully (`node scripts/verify-release.js` after packing CLI).
+- [ ] Pre-release verification passes successfully by running the release pipeline (`npm run release`).
 - [ ] Commit messages follow the Conventional Commits guidelines.

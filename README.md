@@ -56,7 +56,7 @@ npm install -g devbrain-cli
 Alternatively, you can run it on-demand using `npx`:
 
 ```bash
-npx devbrain --help
+npx devbrain-cli --help
 ```
 
 ---
