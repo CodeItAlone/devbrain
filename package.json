@@ -1,7 +1,8 @@
 {
-  "name": "devbrain",
+  "name": "devbrain-workspace",
   "version": "0.1.0",
   "private": true,
+  "files": [],
   "type": "module",
   "workspaces": [
     "packages/*"
@@ -15,7 +16,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "lint": "eslint \"packages/*/src/**/*.ts\"",
-    "format": "prettier --write \"packages/*/src/**/*.ts\""
+    "format": "prettier --write \"packages/*/src/**/*.ts\"",
+    "release": "node scripts/release-pipeline.js"
   },
   "devDependencies": {
     "@types/node": "^20.11.0",
