@@ -23,4 +23,4 @@ npm install -g devbrain
    devbrain context
    ```
 
-For detailed documentation, community guidelines, and license details, please visit the root repository [README.md](../../README.md).
+For detailed documentation, community guidelines, and license details, please visit the [DevBrain GitHub repository](https://github.com/CodeItAlone/devbrain#readme).
