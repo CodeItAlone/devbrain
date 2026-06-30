@@ -1,5 +1,5 @@
 import { execSync } from 'node:child_process';
-import { existsSync, readdirSync, statSync, rmSync } from 'node:fs';
+import { existsSync, readdirSync, statSync, rmSync, readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -43,7 +43,9 @@ runCommand('node scripts/verify-release.js');
 
 // 8. Package Audit
 console.log('\n=== RUNNING PACKAGE AUDIT ===');
-const tarballName = 'devbrain-cli-0.1.0.tgz';
+const cliPackageJson = JSON.parse(readFileSync(join(cliDir, 'package.json'), 'utf8'));
+const version = cliPackageJson.version;
+const tarballName = `devbrain-cli-${version}.tgz`;
 const tarballPath = join(cliDir, tarballName);
 
 if (!existsSync(tarballPath)) {

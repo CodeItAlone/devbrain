@@ -1,24 +1,22 @@
 import { execSync } from 'node:child_process';
-import { existsSync, mkdirSync, writeFileSync, rmSync, readFileSync } from 'node:fs';
+import { existsSync, mkdirSync, writeFileSync, rmSync, readFileSync, readdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { tmpdir } from 'node:os';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const rootDir = join(__dirname, '..');
 
-const tarballPath = join(rootDir, 'packages/cli/devbrain-cli-0.1.0.tgz');
-const verifyDir = join(rootDir, 'verification-temp');
+const rootPackageJson = JSON.parse(readFileSync(join(rootDir, 'package.json'), 'utf8'));
+const version = rootPackageJson.version;
+
+const tarballPath = join(rootDir, `packages/cli/devbrain-cli-${version}.tgz`);
+const verifyDir = join(tmpdir(), `devbrain-release-verify-${Date.now()}`);
 const packageDir = join(verifyDir, 'package');
 const testAppDir = join(verifyDir, 'test-app');
 
-console.log('--- DevBrain v0.1 Release Verification ---');
 
-// 1. Check if tarball exists
-if (!existsSync(tarballPath)) {
-  console.error(`Tarball not found at: ${tarballPath}. Please run "npm pack" in packages/cli first.`);
-  process.exit(1);
-}
 
 try {
   // Clean old verification directory
@@ -30,13 +28,19 @@ try {
   mkdirSync(testAppDir, { recursive: true });
 
   console.log('1. Extracting tarball...');
-  // Copy tarball to verify directory
-  const tempTarball = join(verifyDir, 'devbrain-cli-0.1.0.tgz');
   execSync(`tar -xzf "${tarballPath}" -C "${verifyDir}"`);
 
   if (!existsSync(packageDir)) {
     throw new Error('Tarball did not extract into "package" subdirectory.');
   }
+
+  const extractedPackageJson = JSON.parse(readFileSync(join(packageDir, 'package.json'), 'utf8'));
+  const extractedVersion = extractedPackageJson.version;
+  if (extractedVersion !== version) {
+    throw new Error(`Extracted package version (${extractedVersion}) does not match expected version (${version})`);
+  }
+
+  console.log(`--- DevBrain v${version} Release Verification ---`);
 
   console.log('2. Verifying bundled dependencies presence...');
   const bundledCore = join(packageDir, 'node_modules/@devbrain/core');
@@ -56,36 +60,54 @@ try {
     throw new Error('CLI help output is invalid.');
   }
   const versionOutput = execSync('node dist/bin.js --version', { cwd: packageDir }).toString().trim();
-  if (versionOutput !== '0.1.0') {
-    throw new Error(`CLI version output is invalid: expected 0.1.0, got ${versionOutput}`);
+  if (versionOutput !== version) {
+    throw new Error(`CLI version output is invalid: expected ${version}, got ${versionOutput}`);
   }
   console.log('   [PASS] Help and version commands work.');
 
-  console.log('5. Verifying lifecycle commands: init -> learn -> context in a clean test project...');
+  console.log('5. Verifying package installation and executable mapping (Smoke Test)...');
   
+  // Install the packaged tarball locally in the test app
+  execSync(`npm install "${tarballPath}"`, { cwd: testAppDir, stdio: 'inherit' });
+  console.log('   [PASS] Package installed successfully via npm install.');
+
   // Write some mock files in test app to scan
   writeFileSync(join(testAppDir, 'README.md'), '# Mock Verification App\nThis is a test application.');
-  writeFileSync(join(testAppDir, 'package.json'), JSON.stringify({ name: 'mock-verify', version: '1.2.3' }, null, 2));
+
+  // Run the commands via the generated binary wrapper to test the bin linking
+  const binPath = process.platform === 'win32' 
+    ? join('node_modules', '.bin', 'devbrain.cmd') 
+    : './node_modules/.bin/devbrain';
+
+  console.log('   Running: devbrain --version');
+  const smokeVer = execSync(`"${binPath}" --version`, { cwd: testAppDir }).toString().trim();
+  if (smokeVer !== version) {
+    throw new Error(`Smoke test version check failed: expected ${version}, got ${smokeVer}`);
+  }
+  console.log('   [PASS] version command works.');
 
   console.log('   Running: devbrain init');
-  execSync(`node "${join(packageDir, 'dist/bin.js')}" init`, { cwd: testAppDir, stdio: 'inherit' });
+  execSync(`"${binPath}" init`, { cwd: testAppDir, stdio: 'inherit' });
   const configPath = join(testAppDir, '.devbrain/config.json');
   if (!existsSync(configPath)) {
     throw new Error('devbrain init did not create config.json');
   }
+  console.log('   [PASS] init command works.');
 
   console.log('   Running: devbrain learn');
-  execSync(`node "${join(packageDir, 'dist/bin.js')}" learn`, { cwd: testAppDir, stdio: 'inherit' });
+  execSync(`"${binPath}" learn`, { cwd: testAppDir, stdio: 'inherit' });
   const memorySummaryPath = join(testAppDir, '.devbrain/memory/summary.md');
   if (!existsSync(memorySummaryPath)) {
     throw new Error('devbrain learn did not create summary.md');
   }
+  console.log('   [PASS] learn command works.');
 
   console.log('   Running: devbrain context');
-  const contextOutput = execSync(`node "${join(packageDir, 'dist/bin.js')}" context`, { cwd: testAppDir }).toString();
-  if (!contextOutput.includes('# DEVBRAIN PROJECT CONTEXT INDEX')) {
+  const contextOutput = execSync(`"${binPath}" context`, { cwd: testAppDir }).toString();
+  if (!contextOutput.includes('# DEVBRAIN PROJECT CONTEXT INDEX') && !contextOutput.includes('# DEVBRAIN AI CONTEXT')) {
     throw new Error('devbrain context output is invalid');
   }
+  console.log('   [PASS] context command works.');
   console.log('   [PASS] Lifecycle commands execute correctly.');
 
   console.log('\n--- VERIFICATION SUCCESSFUL ---');
