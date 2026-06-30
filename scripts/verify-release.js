@@ -7,19 +7,14 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const rootDir = join(__dirname, '..');
 
-const cliDir = join(rootDir, 'packages/cli');
-const files = readdirSync(cliDir);
-const tarballName = files.find(f => f.startsWith('devbrain-cli-') && f.endsWith('.tgz'));
+const rootPackageJson = JSON.parse(readFileSync(join(rootDir, 'package.json'), 'utf8'));
+const version = rootPackageJson.version;
 
-if (!tarballName) {
-  console.error('Tarball not found in packages/cli. Please run "npm pack" in packages/cli first.');
-  process.exit(1);
-}
-
-const tarballPath = join(cliDir, tarballName);
+const tarballPath = join(rootDir, `packages/cli/devbrain-cli-${version}.tgz`);
 const verifyDir = join(rootDir, 'verification-temp');
 const packageDir = join(verifyDir, 'package');
 const testAppDir = join(verifyDir, 'test-app');
+
 
 
 try {
@@ -39,7 +34,10 @@ try {
   }
 
   const extractedPackageJson = JSON.parse(readFileSync(join(packageDir, 'package.json'), 'utf8'));
-  const version = extractedPackageJson.version;
+  const extractedVersion = extractedPackageJson.version;
+  if (extractedVersion !== version) {
+    throw new Error(`Extracted package version (${extractedVersion}) does not match expected version (${version})`);
+  }
 
   console.log(`--- DevBrain v${version} Release Verification ---`);
 
