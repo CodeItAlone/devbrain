@@ -2,6 +2,7 @@ import { execSync } from 'node:child_process';
 import { existsSync, mkdirSync, writeFileSync, rmSync, readFileSync, readdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { tmpdir } from 'node:os';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -11,7 +12,7 @@ const rootPackageJson = JSON.parse(readFileSync(join(rootDir, 'package.json'), '
 const version = rootPackageJson.version;
 
 const tarballPath = join(rootDir, `packages/cli/devbrain-cli-${version}.tgz`);
-const verifyDir = join(rootDir, 'verification-temp');
+const verifyDir = join(tmpdir(), `devbrain-release-verify-${Date.now()}`);
 const packageDir = join(verifyDir, 'package');
 const testAppDir = join(verifyDir, 'test-app');
 
@@ -64,31 +65,49 @@ try {
   }
   console.log('   [PASS] Help and version commands work.');
 
-  console.log('5. Verifying lifecycle commands: init -> learn -> context in a clean test project...');
+  console.log('5. Verifying package installation and executable mapping (Smoke Test)...');
   
+  // Install the packaged tarball locally in the test app
+  execSync(`npm install "${tarballPath}"`, { cwd: testAppDir, stdio: 'inherit' });
+  console.log('   [PASS] Package installed successfully via npm install.');
+
   // Write some mock files in test app to scan
   writeFileSync(join(testAppDir, 'README.md'), '# Mock Verification App\nThis is a test application.');
-  writeFileSync(join(testAppDir, 'package.json'), JSON.stringify({ name: 'mock-verify', version: '1.2.3' }, null, 2));
+
+  // Run the commands via the generated binary wrapper to test the bin linking
+  const binPath = process.platform === 'win32' 
+    ? join('node_modules', '.bin', 'devbrain.cmd') 
+    : './node_modules/.bin/devbrain';
+
+  console.log('   Running: devbrain --version');
+  const smokeVer = execSync(`"${binPath}" --version`, { cwd: testAppDir }).toString().trim();
+  if (smokeVer !== version) {
+    throw new Error(`Smoke test version check failed: expected ${version}, got ${smokeVer}`);
+  }
+  console.log('   [PASS] version command works.');
 
   console.log('   Running: devbrain init');
-  execSync(`node "${join(packageDir, 'dist/bin.js')}" init`, { cwd: testAppDir, stdio: 'inherit' });
+  execSync(`"${binPath}" init`, { cwd: testAppDir, stdio: 'inherit' });
   const configPath = join(testAppDir, '.devbrain/config.json');
   if (!existsSync(configPath)) {
     throw new Error('devbrain init did not create config.json');
   }
+  console.log('   [PASS] init command works.');
 
   console.log('   Running: devbrain learn');
-  execSync(`node "${join(packageDir, 'dist/bin.js')}" learn`, { cwd: testAppDir, stdio: 'inherit' });
+  execSync(`"${binPath}" learn`, { cwd: testAppDir, stdio: 'inherit' });
   const memorySummaryPath = join(testAppDir, '.devbrain/memory/summary.md');
   if (!existsSync(memorySummaryPath)) {
     throw new Error('devbrain learn did not create summary.md');
   }
+  console.log('   [PASS] learn command works.');
 
   console.log('   Running: devbrain context');
-  const contextOutput = execSync(`node "${join(packageDir, 'dist/bin.js')}" context`, { cwd: testAppDir }).toString();
+  const contextOutput = execSync(`"${binPath}" context`, { cwd: testAppDir }).toString();
   if (!contextOutput.includes('# DEVBRAIN PROJECT CONTEXT INDEX') && !contextOutput.includes('# DEVBRAIN AI CONTEXT')) {
     throw new Error('devbrain context output is invalid');
   }
+  console.log('   [PASS] context command works.');
   console.log('   [PASS] Lifecycle commands execute correctly.');
 
   console.log('\n--- VERIFICATION SUCCESSFUL ---');
