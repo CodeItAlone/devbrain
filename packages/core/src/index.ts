@@ -6,6 +6,12 @@ export { Analyzer } from './analysis/analyzer.interface.js';
 export { AnalyzerRegistry } from './analysis/analyzer.registry.js';
 export { MemoryService } from './memory/memory.service.js';
 export { ContextService } from './context/context.service.js';
+export { GitService } from './git/git.service.js';
+export { LockManager } from './engine/lock.manager.js';
+export { LoggerService } from './engine/logger.service.js';
+export { HistoryManager } from './engine/history.manager.js';
+export { DependencyResolver } from './engine/dependency.resolver.js';
+export { MemoryEngine } from './engine/memory.engine.js';
 
 // Concrete Analyzer exports
 export { ReadmeAnalyzer } from './analysis/analyzers/readme.analyzer.js';
@@ -16,3 +22,4 @@ export { DockerfileAnalyzer } from './analysis/analyzers/docker.analyzer.js';
 export { RequirementsTxtAnalyzer } from './analysis/analyzers/requirements-txt.analyzer.js';
 export { PomXmlAnalyzer } from './analysis/analyzers/pom-xml.analyzer.js';
 export { BuildGradleAnalyzer } from './analysis/analyzers/build-gradle.analyzer.js';
+export { SourceCodeAnalyzer } from './analysis/analyzers/source-code.analyzer.js';

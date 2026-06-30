@@ -62,9 +62,8 @@ describe('CLI Commands Integration Tests', () => {
 
     expect(logSpy).toHaveBeenCalled();
     const printedOutput = logSpy.mock.calls[0][0];
-    expect(printedOutput).toContain('# DEVBRAIN PROJECT CONTEXT INDEX');
-    expect(printedOutput).toContain('## SECTION: SUMMARY');
-    expect(printedOutput).toContain('## SECTION: STACK');
+    expect(printedOutput).toContain('# DEVBRAIN AI CONTEXT');
+    expect(printedOutput).toContain('## Tech Stack & Language');
 
     logSpy.mockRestore();
   });
