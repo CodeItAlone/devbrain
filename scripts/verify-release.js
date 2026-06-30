@@ -7,12 +7,15 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const rootDir = join(__dirname, '..');
 
-const tarballPath = join(rootDir, 'packages/cli/devbrain-cli-0.1.0.tgz');
+const cliPackageJson = JSON.parse(readFileSync(join(rootDir, 'packages/cli/package.json'), 'utf8'));
+const version = cliPackageJson.version;
+
+const tarballPath = join(rootDir, `packages/cli/devbrain-cli-${version}.tgz`);
 const verifyDir = join(rootDir, 'verification-temp');
 const packageDir = join(verifyDir, 'package');
 const testAppDir = join(verifyDir, 'test-app');
 
-console.log('--- DevBrain v0.1 Release Verification ---');
+console.log(`--- DevBrain v${version} Release Verification ---`);
 
 // 1. Check if tarball exists
 if (!existsSync(tarballPath)) {
@@ -31,7 +34,7 @@ try {
 
   console.log('1. Extracting tarball...');
   // Copy tarball to verify directory
-  const tempTarball = join(verifyDir, 'devbrain-cli-0.1.0.tgz');
+  const tempTarball = join(verifyDir, `devbrain-cli-${version}.tgz`);
   execSync(`tar -xzf "${tarballPath}" -C "${verifyDir}"`);
 
   if (!existsSync(packageDir)) {
@@ -56,8 +59,8 @@ try {
     throw new Error('CLI help output is invalid.');
   }
   const versionOutput = execSync('node dist/bin.js --version', { cwd: packageDir }).toString().trim();
-  if (versionOutput !== '0.1.0') {
-    throw new Error(`CLI version output is invalid: expected 0.1.0, got ${versionOutput}`);
+  if (versionOutput !== version) {
+    throw new Error(`CLI version output is invalid: expected ${version}, got ${versionOutput}`);
   }
   console.log('   [PASS] Help and version commands work.');
 
@@ -83,7 +86,7 @@ try {
 
   console.log('   Running: devbrain context');
   const contextOutput = execSync(`node "${join(packageDir, 'dist/bin.js')}" context`, { cwd: testAppDir }).toString();
-  if (!contextOutput.includes('# DEVBRAIN PROJECT CONTEXT INDEX')) {
+  if (!contextOutput.includes('# DEVBRAIN PROJECT CONTEXT INDEX') && !contextOutput.includes('# DEVBRAIN AI CONTEXT')) {
     throw new Error('devbrain context output is invalid');
   }
   console.log('   [PASS] Lifecycle commands execute correctly.');
