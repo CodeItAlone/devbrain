@@ -17,6 +17,7 @@
     "test:watch": "vitest",
     "lint": "eslint \"packages/*/src/**/*.ts\"",
     "format": "prettier --write \"packages/*/src/**/*.ts\"",
+    "pack": "npm pack -w packages/cli --pack-destination=packages/cli",
     "release": "node scripts/release-pipeline.js"
   },
   "devDependencies": {
@@ -27,5 +28,8 @@
     "prettier": "^3.2.5",
     "typescript": "^5.4.3",
     "vitest": "^4.1.9"
+  },
+  "dependencies": {
+    "devbrain-cli": "^0.2.0"
   }
 }
