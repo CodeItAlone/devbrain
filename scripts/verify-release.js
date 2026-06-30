@@ -1,5 +1,5 @@
 import { execSync } from 'node:child_process';
-import { existsSync, mkdirSync, writeFileSync, rmSync, readFileSync } from 'node:fs';
+import { existsSync, mkdirSync, writeFileSync, rmSync, readFileSync, readdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -7,21 +7,20 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const rootDir = join(__dirname, '..');
 
-const cliPackageJson = JSON.parse(readFileSync(join(rootDir, 'packages/cli/package.json'), 'utf8'));
-const version = cliPackageJson.version;
+const cliDir = join(rootDir, 'packages/cli');
+const files = readdirSync(cliDir);
+const tarballName = files.find(f => f.startsWith('devbrain-cli-') && f.endsWith('.tgz'));
 
-const tarballPath = join(rootDir, `packages/cli/devbrain-cli-${version}.tgz`);
+if (!tarballName) {
+  console.error('Tarball not found in packages/cli. Please run "npm pack" in packages/cli first.');
+  process.exit(1);
+}
+
+const tarballPath = join(cliDir, tarballName);
 const verifyDir = join(rootDir, 'verification-temp');
 const packageDir = join(verifyDir, 'package');
 const testAppDir = join(verifyDir, 'test-app');
 
-console.log(`--- DevBrain v${version} Release Verification ---`);
-
-// 1. Check if tarball exists
-if (!existsSync(tarballPath)) {
-  console.error(`Tarball not found at: ${tarballPath}. Please run "npm pack" in packages/cli first.`);
-  process.exit(1);
-}
 
 try {
   // Clean old verification directory
@@ -33,13 +32,16 @@ try {
   mkdirSync(testAppDir, { recursive: true });
 
   console.log('1. Extracting tarball...');
-  // Copy tarball to verify directory
-  const tempTarball = join(verifyDir, `devbrain-cli-${version}.tgz`);
   execSync(`tar -xzf "${tarballPath}" -C "${verifyDir}"`);
 
   if (!existsSync(packageDir)) {
     throw new Error('Tarball did not extract into "package" subdirectory.');
   }
+
+  const extractedPackageJson = JSON.parse(readFileSync(join(packageDir, 'package.json'), 'utf8'));
+  const version = extractedPackageJson.version;
+
+  console.log(`--- DevBrain v${version} Release Verification ---`);
 
   console.log('2. Verifying bundled dependencies presence...');
   const bundledCore = join(packageDir, 'node_modules/@devbrain/core');
