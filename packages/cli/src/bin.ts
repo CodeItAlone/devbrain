@@ -4,6 +4,9 @@ import { Command } from 'commander';
 import { InitCommand } from './commands/init.command.js';
 import { LearnCommand } from './commands/learn.command.js';
 import { ContextCommand } from './commands/context.command.js';
+import { StatusCommand } from './commands/status.command.js';
+import { HistoryCommand } from './commands/history.command.js';
+import { HookCommand } from './commands/hook.command.js';
 import { DEVBRAIN_VERSION } from '@devbrain/shared';
 
 const program = new Command();
@@ -28,11 +31,17 @@ program
   .command('learn')
   .description('Scan repository files and update documentation memory deterministically')
   .option('-d, --debug', 'Enable verbose debug outputs and print stack traces')
+  .option('-f, --force', 'Force a full scanned refresh of memory')
+  .option('--silent', 'Execute silently in the background')
   .option('--no-gitignore', 'Skip matching .gitignore exclude rules')
   .action(async (options) => {
     const cwd = process.cwd();
     const cmd = new LearnCommand();
-    await cmd.execute(cwd, !!options.debug, { respectGitignore: options.gitignore !== false });
+    await cmd.execute(cwd, !!options.debug, {
+      force: !!options.force,
+      silent: !!options.silent,
+      respectGitignore: options.gitignore !== false,
+    });
   });
 
 program
@@ -44,6 +53,51 @@ program
     const cwd = process.cwd();
     const cmd = new ContextCommand();
     await cmd.execute(cwd, !!options.debug, { raw: !!options.raw });
+  });
+
+program
+  .command('status')
+  .description('Display autonomous Git integration status and repository statistics')
+  .option('-d, --debug', 'Enable verbose debug outputs and print stack traces')
+  .action(async (options) => {
+    const cwd = process.cwd();
+    const cmd = new StatusCommand();
+    await cmd.execute(cwd, !!options.debug, {});
+  });
+
+program
+  .command('history')
+  .description('Display commit history processing logs and version metrics')
+  .option('-d, --debug', 'Enable verbose debug outputs and print stack traces')
+  .action(async (options) => {
+    const cwd = process.cwd();
+    const cmd = new HistoryCommand();
+    await cmd.execute(cwd, !!options.debug, {});
+  });
+
+// Git Hook Subcommand group
+const hookGroup = program
+  .command('hook')
+  .description('Manage DevBrain autonomous Git integration hooks');
+
+hookGroup
+  .command('install')
+  .description('Install the post-commit git hook')
+  .option('-d, --debug', 'Enable verbose debug outputs and print stack traces')
+  .action(async (options) => {
+    const cwd = process.cwd();
+    const cmd = new HookCommand();
+    await cmd.execute(cwd, !!options.debug, { action: 'install' });
+  });
+
+hookGroup
+  .command('remove')
+  .description('Remove the post-commit git hook')
+  .option('-d, --debug', 'Enable verbose debug outputs and print stack traces')
+  .action(async (options) => {
+    const cwd = process.cwd();
+    const cmd = new HookCommand();
+    await cmd.execute(cwd, !!options.debug, { action: 'remove' });
   });
 
 // Handle unknown commands
