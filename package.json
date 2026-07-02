@@ -1,6 +1,6 @@
 {
   "name": "devbrain-workspace",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
   "files": [],
   "type": "module",
@@ -12,7 +12,7 @@
   },
   "scripts": {
     "clean": "node scripts/clean.js",
-    "build": "npm run clean && npm run build -w packages/shared && npm run build -w packages/core && npm run build -w packages/cli",
+    "build": "npm run clean && npm run build -w packages/shared && npm run build -w packages/core && npm run compile -w packages/cli",
     "test": "vitest run",
     "test:watch": "vitest",
     "lint": "eslint \"packages/*/src/**/*.ts\"",
@@ -21,7 +21,7 @@
     "release": "node scripts/release-pipeline.js"
   },
   "devDependencies": {
-    "@types/node": "^20.11.0",
+    "@types/node": "^22.20.0",
     "@typescript-eslint/eslint-plugin": "^7.3.1",
     "@typescript-eslint/parser": "^7.3.1",
     "eslint": "^8.57.0",
@@ -30,6 +30,6 @@
     "vitest": "^4.1.9"
   },
   "dependencies": {
-    "devbrain-cli": "^0.2.0"
+    "devbrain-cli": "^0.3.0"
   }
 }

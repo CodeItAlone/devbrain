@@ -23,3 +23,13 @@ export { RequirementsTxtAnalyzer } from './analysis/analyzers/requirements-txt.a
 export { PomXmlAnalyzer } from './analysis/analyzers/pom-xml.analyzer.js';
 export { BuildGradleAnalyzer } from './analysis/analyzers/build-gradle.analyzer.js';
 export { SourceCodeAnalyzer } from './analysis/analyzers/source-code.analyzer.js';
+
+// Semantic Search & Local Embeddings v0.3
+export { EmbeddingProvider } from './embeddings/EmbeddingProvider.js';
+export { TransformersProvider } from './embeddings/TransformersProvider.js';
+export { VectorChunk, VectorStore } from './index/VectorStore.js';
+export { SQLiteVectorStore } from './index/SQLiteVectorStore.js';
+export { VectorIndexer } from './index/VectorIndexer.js';
+export { RankingEngine, GitCommitInfo } from './retrieval/RankingEngine.js';
+export { RetrievedMemory, SemanticRetriever } from './retrieval/SemanticRetriever.js';
+export { ContextBuilder } from './retrieval/ContextBuilder.js';

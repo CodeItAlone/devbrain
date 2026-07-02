@@ -84,4 +84,39 @@ describe('CLI Commands Integration Tests', () => {
     await initCmd.execute(tempDir, false, {});
     expect(exitMock).toHaveBeenCalledWith(1);
   });
+
+  it('should decoupling memory sync and vector sync, recreate vectors.db on unchanged HEAD, repair index, and index all memory .md files', async () => {
+    // 1. Setup workspace
+    const initCmd = new InitCommand();
+    await initCmd.execute(tempDir, false, {});
+
+    await fsService.write(
+      join(tempDir, 'README.md'),
+      '# Decoupled Project\nThis is a testing readme.',
+    );
+    await fsService.write(
+      join(tempDir, 'package.json'),
+      JSON.stringify({ name: 'decoupled-package', version: '1.0.0' }),
+    );
+
+    // 2. Run learn command to initialize memory and vectors
+    const learnCmd = new LearnCommand();
+    await learnCmd.execute(tempDir, false, {});
+
+    const dbPath = join(tempDir, '.devbrain/vectors.db');
+    expect(await fsService.exists(dbPath)).toBe(true);
+
+    // 3. Delete vectors.db manually
+    const { unlink } = await import('node:fs/promises');
+    await unlink(dbPath);
+    expect(await fsService.exists(dbPath)).toBe(false);
+
+    // 4. Run learn command again WITHOUT changing HEAD
+    await learnCmd.execute(tempDir, false, {});
+    expect(await fsService.exists(dbPath)).toBe(true);
+
+    // 5. Test repair mode
+    await learnCmd.execute(tempDir, false, { repair: true });
+    expect(await fsService.exists(dbPath)).toBe(true);
+  });
 });

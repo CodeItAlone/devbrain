@@ -1,0 +1,1025 @@
+{
+  "projectName": "DevBrain",
+  "technologies": [
+    "Node.js",
+    "TypeScript"
+  ],
+  "frameworks": [],
+  "metadata": {
+    "projectLanguage": "TypeScript",
+    "projectFramework": "Node.js base"
+  },
+  "files": [
+    ".editorconfig",
+    ".eslintrc.json",
+    ".gitignore",
+    ".prettierrc",
+    "CHANGELOG.md",
+    "CODE_OF_CONDUCT.md",
+    "CONTRIBUTING.md",
+    "git-memory-engine.md",
+    "LICENSE",
+    "monorepo-ci-fix.md",
+    "package-lock.json",
+    "package.json",
+    "README.md",
+    "release-pipeline-audit.md",
+    "SECURITY.md",
+    "tsconfig.json",
+    "tsconfig.settings.json",
+    "vitest.config.ts",
+    ".agents/ARCHITECTURE.md",
+    ".agents/mcp_config.json",
+    ".devbrain/.lock",
+    ".devbrain/config.json",
+    ".devbrain/custom_notes.md",
+    ".devbrain/version.json",
+    ".github/pull_request_template.md",
+    "docs/ARCHITECTURE.md",
+    "docs/RELEASE_CHECKLIST.md",
+    "docs/ROADMAP.md",
+    "scripts/clean.js",
+    "scripts/prepare-cli.js",
+    "scripts/release-pipeline.js",
+    "scripts/verify-error-handling.js",
+    "scripts/verify-functional-projects.js",
+    "scripts/verify-release.js",
+    ".agents/agent/backend-specialist.md",
+    ".agents/agent/code-archaeologist.md",
+    ".agents/agent/database-architect.md",
+    ".agents/agent/debugger.md",
+    ".agents/agent/devops-engineer.md",
+    ".agents/agent/documentation-writer.md",
+    ".agents/agent/explorer-agent.md",
+    ".agents/agent/frontend-specialist.md",
+    ".agents/agent/game-developer.md",
+    ".agents/agent/mobile-developer.md",
+    ".agents/agent/orchestrator.md",
+    ".agents/agent/penetration-tester.md",
+    ".agents/agent/performance-optimizer.md",
+    ".agents/agent/product-manager.md",
+    ".agents/agent/product-owner.md",
+    ".agents/agent/project-planner.md",
+    ".agents/agent/qa-automation-engineer.md",
+    ".agents/agent/security-auditor.md",
+    ".agents/agent/seo-specialist.md",
+    ".agents/agent/test-engineer.md",
+    ".agents/memory/MEMORY.md",
+    ".agents/memory/project-conventions.md",
+    ".agents/rules/code-rules.md",
+    ".agents/rules/core-protocol.md",
+    ".agents/rules/design-rules.md",
+    ".agents/rules/quick-reference.md",
+    ".agents/rules/request-routing.md",
+    ".agents/rules/universal-rules.md",
+    ".agents/scripts/auto_preview.py",
+    ".agents/scripts/checklist.py",
+    ".agents/scripts/session_manager.py",
+    ".agents/scripts/verify_all.py",
+    ".agents/workflows/brainstorm.md",
+    ".agents/workflows/coordinate.md",
+    ".agents/workflows/create.md",
+    ".agents/workflows/debug.md",
+    ".agents/workflows/deploy.md",
+    ".agents/workflows/enhance.md",
+    ".agents/workflows/orchestrate.md",
+    ".agents/workflows/plan.md",
+    ".agents/workflows/preview.md",
+    ".agents/workflows/remember.md",
+    ".agents/workflows/status.md",
+    ".agents/workflows/test.md",
+    ".agents/workflows/verify.md",
+    ".github/ISSUE_TEMPLATE/bug_report.md",
+    ".github/ISSUE_TEMPLATE/feature_request.md",
+    ".github/ISSUE_TEMPLATE/question.md",
+    ".github/workflows/ci.yml",
+    "docs/archive/devbrain-foundation.md",
+    "packages/cli/.npmignore",
+    "packages/cli/LICENSE",
+    "packages/cli/package.json",
+    "packages/cli/README.md",
+    "packages/cli/tsconfig.json",
+    "packages/core/package.json",
+    "packages/core/README.md",
+    "packages/core/tsconfig.json",
+    "packages/shared/package.json",
+    "packages/shared/README.md",
+    "packages/shared/tsconfig.json",
+    ".agents/skills/api-patterns/api-style.md",
+    ".agents/skills/api-patterns/auth.md",
+    ".agents/skills/api-patterns/documentation.md",
+    ".agents/skills/api-patterns/graphql.md",
+    ".agents/skills/api-patterns/rate-limiting.md",
+    ".agents/skills/api-patterns/response.md",
+    ".agents/skills/api-patterns/rest.md",
+    ".agents/skills/api-patterns/security-testing.md",
+    ".agents/skills/api-patterns/SKILL.md",
+    ".agents/skills/api-patterns/trpc.md",
+    ".agents/skills/api-patterns/versioning.md",
+    ".agents/skills/app-builder/agent-coordination.md",
+    ".agents/skills/app-builder/feature-building.md",
+    ".agents/skills/app-builder/project-detection.md",
+    ".agents/skills/app-builder/scaffolding.md",
+    ".agents/skills/app-builder/SKILL.md",
+    ".agents/skills/app-builder/tech-stack.md",
+    ".agents/skills/architecture/context-discovery.md",
+    ".agents/skills/architecture/examples.md",
+    ".agents/skills/architecture/pattern-selection.md",
+    ".agents/skills/architecture/patterns-reference.md",
+    ".agents/skills/architecture/SKILL.md",
+    ".agents/skills/architecture/trade-off-analysis.md",
+    ".agents/skills/bash-linux/SKILL.md",
+    ".agents/skills/batch-operations/SKILL.md",
+    ".agents/skills/behavioral-modes/SKILL.md",
+    ".agents/skills/brainstorming/dynamic-questioning.md",
+    ".agents/skills/brainstorming/SKILL.md",
+    ".agents/skills/clean-code/SKILL.md",
+    ".agents/skills/code-review-checklist/SKILL.md",
+    ".agents/skills/code-review-graph/SKILL.md",
+    ".agents/skills/context-compression/SKILL.md",
+    ".agents/skills/coordinator-mode/SKILL.md",
+    ".agents/skills/database-design/database-selection.md",
+    ".agents/skills/database-design/indexing.md",
+    ".agents/skills/database-design/migrations.md",
+    ".agents/skills/database-design/optimization.md",
+    ".agents/skills/database-design/orm-selection.md",
+    ".agents/skills/database-design/schema-design.md",
+    ".agents/skills/database-design/SKILL.md",
+    ".agents/skills/deployment-procedures/SKILL.md",
+    ".agents/skills/documentation-templates/SKILL.md",
+    ".agents/skills/frontend-design/animation-guide.md",
+    ".agents/skills/frontend-design/color-system.md",
+    ".agents/skills/frontend-design/decision-trees.md",
+    ".agents/skills/frontend-design/motion-graphics.md",
+    ".agents/skills/frontend-design/SKILL.md",
+    ".agents/skills/frontend-design/typography-system.md",
+    ".agents/skills/frontend-design/ux-psychology.md",
+    ".agents/skills/frontend-design/visual-effects.md",
+    ".agents/skills/game-development/SKILL.md",
+    ".agents/skills/geo-fundamentals/SKILL.md",
+    ".agents/skills/i18n-localization/SKILL.md",
+    ".agents/skills/intelligent-routing/SKILL.md",
+    ".agents/skills/lint-and-validate/SKILL.md",
+    ".agents/skills/mcp-builder/SKILL.md",
+    ".agents/skills/memory-system/SKILL.md",
+    ".agents/skills/mobile-design/decision-trees.md",
+    ".agents/skills/mobile-design/mobile-backend.md",
+    ".agents/skills/mobile-design/mobile-color-system.md",
+    ".agents/skills/mobile-design/mobile-debugging.md",
+    ".agents/skills/mobile-design/mobile-design-thinking.md",
+    ".agents/skills/mobile-design/mobile-navigation.md",
+    ".agents/skills/mobile-design/mobile-performance.md",
+    ".agents/skills/mobile-design/mobile-testing.md",
+    ".agents/skills/mobile-design/mobile-typography.md",
+    ".agents/skills/mobile-design/platform-android.md",
+    ".agents/skills/mobile-design/platform-ios.md",
+    ".agents/skills/mobile-design/SKILL.md",
+    ".agents/skills/mobile-design/touch-psychology.md",
+    ".agents/skills/nextjs-react-expert/1-async-eliminating-waterfalls.md",
+    ".agents/skills/nextjs-react-expert/2-bundle-bundle-size-optimization.md",
+    ".agents/skills/nextjs-react-expert/3-server-server-side-performance.md",
+    ".agents/skills/nextjs-react-expert/4-client-client-side-data-fetching.md",
+    ".agents/skills/nextjs-react-expert/5-rerender-re-render-optimization.md",
+    ".agents/skills/nextjs-react-expert/6-rendering-rendering-performance.md",
+    ".agents/skills/nextjs-react-expert/7-js-javascript-performance.md",
+    ".agents/skills/nextjs-react-expert/8-advanced-advanced-patterns.md",
+    ".agents/skills/nextjs-react-expert/9-cache-components.md",
+    ".agents/skills/nextjs-react-expert/SKILL.md",
+    ".agents/skills/nodejs-best-practices/SKILL.md",
+    ".agents/skills/parallel-agents/SKILL.md",
+    ".agents/skills/performance-profiling/SKILL.md",
+    ".agents/skills/plan-writing/SKILL.md",
+    ".agents/skills/powershell-windows/SKILL.md",
+    ".agents/skills/python-patterns/SKILL.md",
+    ".agents/skills/red-team-tactics/SKILL.md",
+    ".agents/skills/rust-pro/SKILL.md",
+    ".agents/skills/seo-fundamentals/SKILL.md",
+    ".agents/skills/server-management/SKILL.md",
+    ".agents/skills/simplify-code/SKILL.md",
+    ".agents/skills/skillify/SKILL.md",
+    ".agents/skills/systematic-debugging/SKILL.md",
+    ".agents/skills/tailwind-patterns/SKILL.md",
+    ".agents/skills/tdd-workflow/SKILL.md",
+    ".agents/skills/testing-patterns/SKILL.md",
+    ".agents/skills/verify-changes/SKILL.md",
+    ".agents/skills/vulnerability-scanner/checklists.md",
+    ".agents/skills/vulnerability-scanner/SKILL.md",
+    ".agents/skills/web-design-guidelines/SKILL.md",
+    ".agents/skills/webapp-testing/SKILL.md",
+    "packages/cli/src/bin.ts",
+    "packages/core/src/index.ts",
+    "packages/shared/src/constants.ts",
+    "packages/shared/src/errors.ts",
+    "packages/shared/src/index.ts",
+    "packages/shared/src/types.ts",
+    ".agents/skills/api-patterns/scripts/api_validator.py",
+    ".agents/skills/app-builder/templates/SKILL.md",
+    ".agents/skills/database-design/scripts/schema_validator.py",
+    ".agents/skills/frontend-design/scripts/accessibility_checker.py",
+    ".agents/skills/frontend-design/scripts/ux_audit.py",
+    ".agents/skills/game-development/2d-games/SKILL.md",
+    ".agents/skills/game-development/3d-games/SKILL.md",
+    ".agents/skills/game-development/game-art/SKILL.md",
+    ".agents/skills/game-development/game-audio/SKILL.md",
+    ".agents/skills/game-development/game-design/SKILL.md",
+    ".agents/skills/game-development/mobile-games/SKILL.md",
+    ".agents/skills/game-development/multiplayer/SKILL.md",
+    ".agents/skills/game-development/pc-games/SKILL.md",
+    ".agents/skills/game-development/vr-ar/SKILL.md",
+    ".agents/skills/game-development/web-games/SKILL.md",
+    ".agents/skills/geo-fundamentals/scripts/geo_checker.py",
+    ".agents/skills/i18n-localization/scripts/i18n_checker.py",
+    ".agents/skills/lint-and-validate/scripts/lint_runner.py",
+    ".agents/skills/lint-and-validate/scripts/type_coverage.py",
+    ".agents/skills/mobile-design/scripts/mobile_audit.py",
+    ".agents/skills/nextjs-react-expert/scripts/convert_rules.py",
+    ".agents/skills/nextjs-react-expert/scripts/react_performance_checker.py",
+    ".agents/skills/performance-profiling/scripts/lighthouse_audit.py",
+    ".agents/skills/seo-fundamentals/scripts/seo_checker.py",
+    ".agents/skills/testing-patterns/scripts/test_runner.py",
+    ".agents/skills/vulnerability-scanner/scripts/security_scan.py",
+    ".agents/skills/webapp-testing/scripts/playwright_runner.py",
+    "packages/cli/src/commands/commands.test.ts",
+    "packages/cli/src/commands/context.command.ts",
+    "packages/cli/src/commands/history.command.ts",
+    "packages/cli/src/commands/hook.command.ts",
+    "packages/cli/src/commands/init.command.ts",
+    "packages/cli/src/commands/learn.command.ts",
+    "packages/cli/src/commands/status.command.ts",
+    "packages/cli/src/pipeline/command.pipeline.ts",
+    "packages/cli/src/ui/logger.ts",
+    "packages/core/src/analysis/analyzer.interface.ts",
+    "packages/core/src/analysis/analyzer.registry.test.ts",
+    "packages/core/src/analysis/analyzer.registry.ts",
+    "packages/core/src/analysis/scanner.test.ts",
+    "packages/core/src/analysis/scanner.ts",
+    "packages/core/src/context/context.service.test.ts",
+    "packages/core/src/context/context.service.ts",
+    "packages/core/src/engine/dependency.resolver.test.ts",
+    "packages/core/src/engine/dependency.resolver.ts",
+    "packages/core/src/engine/history.manager.ts",
+    "packages/core/src/engine/lock.manager.test.ts",
+    "packages/core/src/engine/lock.manager.ts",
+    "packages/core/src/engine/logger.service.ts",
+    "packages/core/src/engine/memory.engine.test.ts",
+    "packages/core/src/engine/memory.engine.ts",
+    "packages/core/src/filesystem/filesystem.service.test.ts",
+    "packages/core/src/filesystem/filesystem.service.ts",
+    "packages/core/src/git/git.service.test.ts",
+    "packages/core/src/git/git.service.ts",
+    "packages/core/src/memory/memory.service.test.ts",
+    "packages/core/src/memory/memory.service.ts",
+    ".agents/skills/app-builder/templates/astro-static/TEMPLATE.md",
+    ".agents/skills/app-builder/templates/chrome-extension/TEMPLATE.md",
+    ".agents/skills/app-builder/templates/cli-tool/TEMPLATE.md",
+    ".agents/skills/app-builder/templates/electron-desktop/TEMPLATE.md",
+    ".agents/skills/app-builder/templates/express-api/TEMPLATE.md",
+    ".agents/skills/app-builder/templates/flutter-app/TEMPLATE.md",
+    ".agents/skills/app-builder/templates/monorepo-turborepo/TEMPLATE.md",
+    ".agents/skills/app-builder/templates/nextjs-fullstack/TEMPLATE.md",
+    ".agents/skills/app-builder/templates/nextjs-saas/TEMPLATE.md",
+    ".agents/skills/app-builder/templates/nextjs-static/TEMPLATE.md",
+    ".agents/skills/app-builder/templates/nuxt-app/TEMPLATE.md",
+    ".agents/skills/app-builder/templates/python-fastapi/TEMPLATE.md",
+    ".agents/skills/app-builder/templates/react-native-app/TEMPLATE.md",
+    "packages/core/src/analysis/analyzers/build-gradle.analyzer.ts",
+    "packages/core/src/analysis/analyzers/docker.analyzer.ts",
+    "packages/core/src/analysis/analyzers/git.analyzer.ts",
+    "packages/core/src/analysis/analyzers/package-json.analyzer.ts",
+    "packages/core/src/analysis/analyzers/pom-xml.analyzer.ts",
+    "packages/core/src/analysis/analyzers/readme.analyzer.ts",
+    "packages/core/src/analysis/analyzers/requirements-txt.analyzer.ts",
+    "packages/core/src/analysis/analyzers/source-code.analyzer.ts",
+    "packages/core/src/analysis/analyzers/tsconfig.analyzer.ts"
+  ],
+  "analyzers": {
+    "readme": {
+      "title": "DevBrain",
+      "description": "**DevBrain** is an offline-first, production-quality command-line interface (CLI) tool designed to generate and maintain persistent, deterministic project memory for AI assistants. It works locally to scan your repository, analyze your technology stack and file organization, and output a highly optimized, token-efficient single block of context that you can feed directly to any Large Language Model (LLM). ---",
+      "sections": [
+        "🏗️ Architecture Overview",
+        "📦 Installation",
+        "🚀 Quick Start",
+        "🛠️ Command Reference",
+        "⚙️ Configuration Customization",
+        "🔌 Supported Analyzers",
+        "🤝 Contributing",
+        "📄 License"
+      ]
+    },
+    "package-json": {
+      "name": "devbrain-workspace",
+      "version": "0.2.0",
+      "scripts": [
+        "clean",
+        "build",
+        "test",
+        "test:watch",
+        "lint",
+        "format",
+        "pack",
+        "release"
+      ],
+      "dependencies": {
+        "devbrain-cli": "^0.2.0"
+      },
+      "devDependencies": {
+        "@types/node": "^20.11.0",
+        "@typescript-eslint/eslint-plugin": "^7.3.1",
+        "@typescript-eslint/parser": "^7.3.1",
+        "eslint": "^8.57.0",
+        "prettier": "^3.2.5",
+        "typescript": "^5.4.3",
+        "vitest": "^4.1.9"
+      },
+      "engines": {
+        "node": ">=20"
+      },
+      "workspaces": [
+        "packages/*"
+      ],
+      "technologies": [
+        "Node.js",
+        "TypeScript"
+      ],
+      "frameworks": [],
+      "metadata": {
+        "projectLanguage": "TypeScript",
+        "projectFramework": "Node.js base"
+      }
+    },
+    "tsconfig": {
+      "target": "default",
+      "module": "default",
+      "moduleResolution": "default",
+      "strict": false,
+      "jsx": "none",
+      "referencesCount": 3,
+      "technologies": [
+        "TypeScript"
+      ]
+    },
+    "git": {
+      "branch": "feature/repo-hardening",
+      "recentCommits": [
+        {
+          "hash": "846501c",
+          "date": "2026-06-30T21:59:11+05:30",
+          "message": "docs: add release-pipeline-audit plan and Phase X complete verification gate",
+          "author": "CodeItAlone"
+        },
+        {
+          "hash": "ee67428",
+          "date": "2026-06-30T21:58:37+05:30",
+          "message": "fix(release): implement isolated local install and direct bin wrapper execution for release smoke testing",
+          "author": "CodeItAlone"
+        },
+        {
+          "hash": "8c12dad",
+          "date": "2026-06-30T21:58:04+05:30",
+          "message": "fix(release): read version dynamically from package.json in release-pipeline",
+          "author": "CodeItAlone"
+        },
+        {
+          "hash": "a109d84",
+          "date": "2026-06-30T21:57:26+05:30",
+          "message": "feat(root): delegate pack script to CLI workspace with pack-destination",
+          "author": "CodeItAlone"
+        },
+        {
+          "hash": "d439f36",
+          "date": "2026-06-30T21:25:12+05:30",
+          "message": "docs: add monorepo-ci-fix plan and validation exit gate",
+          "author": "CodeItAlone"
+        }
+      ],
+      "remotes": [
+        {
+          "name": "origin",
+          "refs": {
+            "fetch": "https://github.com/CodeItAlone/devbrain.git",
+            "push": "https://github.com/CodeItAlone/devbrain.git"
+          }
+        }
+      ]
+    },
+    "source-code": {
+      "modules": [
+        {
+          "filePath": "vitest.config.ts",
+          "name": "vitest.config",
+          "type": "other",
+          "classes": [],
+          "functions": [],
+          "imports": [
+            "vitest/config",
+            "node:path"
+          ]
+        },
+        {
+          "filePath": "scripts/clean.js",
+          "name": "clean",
+          "type": "other",
+          "classes": [],
+          "functions": [],
+          "imports": [
+            "node:fs",
+            "node:path",
+            "node:url"
+          ]
+        },
+        {
+          "filePath": "scripts/prepare-cli.js",
+          "name": "prepare-cli",
+          "type": "other",
+          "classes": [],
+          "functions": [
+            "copyDir"
+          ],
+          "imports": [
+            "node:fs",
+            "node:path",
+            "node:url"
+          ]
+        },
+        {
+          "filePath": "scripts/release-pipeline.js",
+          "name": "release-pipeline",
+          "type": "other",
+          "classes": [],
+          "functions": [
+            "runCommand"
+          ],
+          "imports": [
+            "node:child_process",
+            "node:fs",
+            "node:path",
+            "node:url"
+          ]
+        },
+        {
+          "filePath": "scripts/verify-error-handling.js",
+          "name": "verify-error-handling",
+          "type": "other",
+          "classes": [],
+          "functions": [],
+          "imports": [
+            "node:child_process",
+            "node:fs",
+            "node:path",
+            "node:url"
+          ]
+        },
+        {
+          "filePath": "scripts/verify-functional-projects.js",
+          "name": "verify-functional-projects",
+          "type": "other",
+          "classes": [],
+          "functions": [],
+          "imports": [
+            "node:child_process",
+            "node:fs",
+            "node:path",
+            "node:url"
+          ]
+        },
+        {
+          "filePath": "scripts/verify-release.js",
+          "name": "verify-release",
+          "type": "other",
+          "classes": [],
+          "functions": [],
+          "imports": [
+            "node:child_process",
+            "node:fs",
+            "node:path",
+            "node:url",
+            "node:os"
+          ]
+        },
+        {
+          "filePath": "packages/cli/src/bin.ts",
+          "name": "bin",
+          "type": "other",
+          "classes": [],
+          "functions": [],
+          "imports": [
+            "commander",
+            "./commands/init.command.js",
+            "./commands/learn.command.js",
+            "./commands/context.command.js",
+            "./commands/status.command.js",
+            "./commands/history.command.js",
+            "./commands/hook.command.js",
+            "@devbrain/shared"
+          ]
+        },
+        {
+          "filePath": "packages/core/src/index.ts",
+          "name": "index",
+          "type": "other",
+          "classes": [],
+          "functions": [],
+          "imports": []
+        },
+        {
+          "filePath": "packages/shared/src/constants.ts",
+          "name": "constants",
+          "type": "other",
+          "classes": [],
+          "functions": [],
+          "imports": []
+        },
+        {
+          "filePath": "packages/shared/src/errors.ts",
+          "name": "errors",
+          "type": "other",
+          "classes": [
+            "for",
+            "DevBrainError",
+            "ValidationError",
+            "FilesystemError",
+            "AnalyzerError",
+            "CommandError"
+          ],
+          "functions": [],
+          "imports": []
+        },
+        {
+          "filePath": "packages/shared/src/index.ts",
+          "name": "index",
+          "type": "other",
+          "classes": [],
+          "functions": [],
+          "imports": []
+        },
+        {
+          "filePath": "packages/shared/src/types.ts",
+          "name": "types",
+          "type": "other",
+          "classes": [],
+          "functions": [],
+          "imports": []
+        },
+        {
+          "filePath": "packages/cli/src/commands/context.command.ts",
+          "name": "context.command",
+          "type": "other",
+          "classes": [
+            "ContextCommand"
+          ],
+          "functions": [],
+          "imports": [
+            "node:path",
+            "@devbrain/core",
+            "../pipeline/command.pipeline.js"
+          ]
+        },
+        {
+          "filePath": "packages/cli/src/commands/history.command.ts",
+          "name": "history.command",
+          "type": "other",
+          "classes": [
+            "HistoryCommand"
+          ],
+          "functions": [],
+          "imports": [
+            "node:path",
+            "@devbrain/shared",
+            "@devbrain/core",
+            "../pipeline/command.pipeline.js",
+            "chalk"
+          ]
+        },
+        {
+          "filePath": "packages/cli/src/commands/hook.command.ts",
+          "name": "hook.command",
+          "type": "other",
+          "classes": [
+            "HookCommand"
+          ],
+          "functions": [],
+          "imports": [
+            "node:path",
+            "@devbrain/shared",
+            "@devbrain/core",
+            "../pipeline/command.pipeline.js"
+          ]
+        },
+        {
+          "filePath": "packages/cli/src/commands/init.command.ts",
+          "name": "init.command",
+          "type": "other",
+          "classes": [
+            "InitCommand"
+          ],
+          "functions": [],
+          "imports": [
+            "node:path",
+            "@devbrain/core",
+            "../pipeline/command.pipeline.js"
+          ]
+        },
+        {
+          "filePath": "packages/cli/src/commands/learn.command.ts",
+          "name": "learn.command",
+          "type": "other",
+          "classes": [
+            "LearnCommand"
+          ],
+          "functions": [],
+          "imports": [
+            "node:path",
+            "../pipeline/command.pipeline.js",
+            "ora"
+          ]
+        },
+        {
+          "filePath": "packages/cli/src/commands/status.command.ts",
+          "name": "status.command",
+          "type": "other",
+          "classes": [
+            "StatusCommand"
+          ],
+          "functions": [],
+          "imports": [
+            "node:path",
+            "@devbrain/shared",
+            "@devbrain/core",
+            "../pipeline/command.pipeline.js",
+            "chalk"
+          ]
+        },
+        {
+          "filePath": "packages/cli/src/pipeline/command.pipeline.ts",
+          "name": "command.pipeline",
+          "type": "other",
+          "classes": [
+            "CommandPipeline"
+          ],
+          "functions": [],
+          "imports": [
+            "@devbrain/shared",
+            "@devbrain/core",
+            "../ui/logger.js",
+            "node:path",
+            "@devbrain/shared"
+          ]
+        },
+        {
+          "filePath": "packages/cli/src/ui/logger.ts",
+          "name": "logger",
+          "type": "other",
+          "classes": [
+            "Logger"
+          ],
+          "functions": [],
+          "imports": [
+            "chalk"
+          ]
+        },
+        {
+          "filePath": "packages/core/src/analysis/analyzer.interface.ts",
+          "name": "analyzer.interface",
+          "type": "other",
+          "classes": [],
+          "functions": [],
+          "imports": [
+            "@devbrain/shared"
+          ]
+        },
+        {
+          "filePath": "packages/core/src/analysis/analyzer.registry.ts",
+          "name": "analyzer.registry",
+          "type": "other",
+          "classes": [
+            "AnalyzerRegistry"
+          ],
+          "functions": [],
+          "imports": [
+            "@devbrain/shared",
+            "./analyzer.interface.js"
+          ]
+        },
+        {
+          "filePath": "packages/core/src/analysis/scanner.ts",
+          "name": "scanner",
+          "type": "other",
+          "classes": [
+            "RepositoryScanner"
+          ],
+          "functions": [],
+          "imports": [
+            "fast-glob",
+            "node:path",
+            "../filesystem/filesystem.service.js",
+            "@devbrain/shared"
+          ]
+        },
+        {
+          "filePath": "packages/core/src/context/context.service.ts",
+          "name": "context.service",
+          "type": "service",
+          "classes": [
+            "ContextService"
+          ],
+          "functions": [],
+          "imports": [
+            "node:path",
+            "../filesystem/filesystem.service.js"
+          ]
+        },
+        {
+          "filePath": "packages/core/src/engine/dependency.resolver.ts",
+          "name": "dependency.resolver",
+          "type": "other",
+          "classes": [
+            "DependencyResolver"
+          ],
+          "functions": [],
+          "imports": [
+            "node:path"
+          ]
+        },
+        {
+          "filePath": "packages/core/src/engine/history.manager.ts",
+          "name": "history.manager",
+          "type": "other",
+          "classes": [
+            "HistoryManager"
+          ],
+          "functions": [],
+          "imports": [
+            "node:path",
+            "@devbrain/shared",
+            "../filesystem/filesystem.service.js"
+          ]
+        },
+        {
+          "filePath": "packages/core/src/engine/lock.manager.ts",
+          "name": "lock.manager",
+          "type": "other",
+          "classes": [
+            "LockManager"
+          ],
+          "functions": [],
+          "imports": [
+            "node:path",
+            "node:fs/promises",
+            "../filesystem/filesystem.service.js",
+            "@devbrain/shared"
+          ]
+        },
+        {
+          "filePath": "packages/core/src/engine/logger.service.ts",
+          "name": "logger.service",
+          "type": "service",
+          "classes": [
+            "LoggerService"
+          ],
+          "functions": [],
+          "imports": [
+            "node:path",
+            "@devbrain/shared",
+            "../filesystem/filesystem.service.js"
+          ]
+        },
+        {
+          "filePath": "packages/core/src/engine/memory.engine.ts",
+          "name": "memory.engine",
+          "type": "other",
+          "classes": [
+            "MemoryEngine"
+          ],
+          "functions": [],
+          "imports": [
+            "node:path",
+            "@devbrain/shared",
+            "../filesystem/filesystem.service.js",
+            "../analysis/analyzer.registry.js",
+            "../analysis/analyzers/readme.analyzer.js",
+            "../analysis/analyzers/package-json.analyzer.js",
+            "../analysis/analyzers/tsconfig.analyzer.js",
+            "../analysis/analyzers/git.analyzer.js",
+            "../analysis/analyzers/docker.analyzer.js",
+            "../analysis/analyzers/requirements-txt.analyzer.js",
+            "../analysis/analyzers/pom-xml.analyzer.js",
+            "../analysis/analyzers/build-gradle.analyzer.js",
+            "../analysis/analyzers/source-code.analyzer.js",
+            "../analysis/scanner.js"
+          ]
+        },
+        {
+          "filePath": "packages/core/src/filesystem/filesystem.service.ts",
+          "name": "filesystem.service",
+          "type": "service",
+          "classes": [
+            "FilesystemService"
+          ],
+          "functions": [],
+          "imports": [
+            "node:fs/promises",
+            "node:path",
+            "@devbrain/shared"
+          ]
+        },
+        {
+          "filePath": "packages/core/src/git/git.service.ts",
+          "name": "git.service",
+          "type": "service",
+          "classes": [
+            "GitService"
+          ],
+          "functions": [],
+          "imports": [
+            "node:path",
+            "node:fs/promises",
+            "simple-git",
+            "../filesystem/filesystem.service.js"
+          ]
+        },
+        {
+          "filePath": "packages/core/src/memory/memory.service.ts",
+          "name": "memory.service",
+          "type": "service",
+          "classes": [
+            "MemoryService"
+          ],
+          "functions": [],
+          "imports": [
+            "node:path",
+            "../filesystem/filesystem.service.js"
+          ]
+        },
+        {
+          "filePath": "packages/core/src/analysis/analyzers/build-gradle.analyzer.ts",
+          "name": "build-gradle.analyzer",
+          "type": "other",
+          "classes": [
+            "BuildGradleAnalyzer"
+          ],
+          "functions": [],
+          "imports": [
+            "node:path",
+            "@devbrain/shared",
+            "../analyzer.interface.js",
+            "../../filesystem/filesystem.service.js"
+          ]
+        },
+        {
+          "filePath": "packages/core/src/analysis/analyzers/docker.analyzer.ts",
+          "name": "docker.analyzer",
+          "type": "other",
+          "classes": [
+            "DockerfileAnalyzer"
+          ],
+          "functions": [],
+          "imports": [
+            "node:path",
+            "@devbrain/shared",
+            "../analyzer.interface.js",
+            "../../filesystem/filesystem.service.js"
+          ]
+        },
+        {
+          "filePath": "packages/core/src/analysis/analyzers/git.analyzer.ts",
+          "name": "git.analyzer",
+          "type": "other",
+          "classes": [
+            "GitAnalyzer"
+          ],
+          "functions": [],
+          "imports": [
+            "node:path",
+            "@devbrain/shared",
+            "../analyzer.interface.js",
+            "simple-git",
+            "../../filesystem/filesystem.service.js"
+          ]
+        },
+        {
+          "filePath": "packages/core/src/analysis/analyzers/package-json.analyzer.ts",
+          "name": "package-json.analyzer",
+          "type": "other",
+          "classes": [
+            "PackageJsonAnalyzer"
+          ],
+          "functions": [],
+          "imports": [
+            "node:path",
+            "@devbrain/shared",
+            "../analyzer.interface.js",
+            "../../filesystem/filesystem.service.js"
+          ]
+        },
+        {
+          "filePath": "packages/core/src/analysis/analyzers/pom-xml.analyzer.ts",
+          "name": "pom-xml.analyzer",
+          "type": "other",
+          "classes": [
+            "PomXmlAnalyzer"
+          ],
+          "functions": [],
+          "imports": [
+            "node:path",
+            "@devbrain/shared",
+            "../analyzer.interface.js",
+            "fast-xml-parser",
+            "../../filesystem/filesystem.service.js"
+          ]
+        },
+        {
+          "filePath": "packages/core/src/analysis/analyzers/readme.analyzer.ts",
+          "name": "readme.analyzer",
+          "type": "other",
+          "classes": [
+            "ReadmeAnalyzer"
+          ],
+          "functions": [],
+          "imports": [
+            "node:path",
+            "@devbrain/shared",
+            "../analyzer.interface.js",
+            "../../filesystem/filesystem.service.js"
+          ]
+        },
+        {
+          "filePath": "packages/core/src/analysis/analyzers/requirements-txt.analyzer.ts",
+          "name": "requirements-txt.analyzer",
+          "type": "other",
+          "classes": [
+            "RequirementsTxtAnalyzer"
+          ],
+          "functions": [],
+          "imports": [
+            "node:path",
+            "@devbrain/shared",
+            "../analyzer.interface.js",
+            "../../filesystem/filesystem.service.js"
+          ]
+        },
+        {
+          "filePath": "packages/core/src/analysis/analyzers/source-code.analyzer.ts",
+          "name": "source-code.analyzer",
+          "type": "other",
+          "classes": [
+            "SourceCodeAnalyzer"
+          ],
+          "functions": [
+            "list"
+          ],
+          "imports": [
+            "node:path",
+            "@devbrain/shared",
+            "../analyzer.interface.js",
+            "../../filesystem/filesystem.service.js"
+          ]
+        },
+        {
+          "filePath": "packages/core/src/analysis/analyzers/tsconfig.analyzer.ts",
+          "name": "tsconfig.analyzer",
+          "type": "other",
+          "classes": [
+            "TsconfigAnalyzer"
+          ],
+          "functions": [],
+          "imports": [
+            "node:path",
+            "@devbrain/shared",
+            "../analyzer.interface.js",
+            "../../filesystem/filesystem.service.js"
+          ]
+        }
+      ],
+      "apis": [
+        {
+          "method": "GET",
+          "path": "/path",
+          "file": "packages/core/src/analysis/analyzers/source-code.analyzer.ts"
+        },
+        {
+          "method": "POST",
+          "path": "/path",
+          "file": "packages/core/src/analysis/analyzers/source-code.analyzer.ts"
+        },
+        {
+          "method": "GET",
+          "path": "/path",
+          "file": "packages/core/src/analysis/analyzers/source-code.analyzer.ts"
+        },
+        {
+          "method": "POST",
+          "path": "/",
+          "file": "packages/core/src/analysis/analyzers/source-code.analyzer.ts"
+        }
+      ],
+      "databaseEntities": [],
+      "authMethods": [
+        "Session-based",
+        "JWT",
+        "OAuth"
+      ],
+      "externalServices": []
+    }
+  }
+}

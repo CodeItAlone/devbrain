@@ -1,6 +1,6 @@
 {
   "name": "@devbrain/core",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
   "files": [
     "dist"
@@ -12,7 +12,8 @@
     "build": "tsc --build"
   },
   "dependencies": {
-    "@devbrain/shared": "^0.2.0"
+    "@devbrain/shared": "^0.3.0",
+    "@huggingface/transformers": "^4.2.0"
   },
   "devDependencies": {
     "fast-glob": "^3.3.2",
