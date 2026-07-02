@@ -87,14 +87,38 @@ Initializes the `.devbrain/` folder structure, sets default exclusions, and gene
 *   `-h, --help`: Displays help info for the initialization command.
 
 ### `devbrain learn [options]`
-Scans the project files, executes registered language/stack analyzers, and generates deterministic markdown documents in `.devbrain/memory/`.
+Scans the project files, executes registered language/stack analyzers, and generates deterministic markdown documents in `.devbrain/memory/`. It then synchronizes the local vector database.
 
+*   `-r, --repair`: Rebuilds the local vector database from scratch.
 *   `-h, --help`: Displays help info for the learning command.
 
-### `devbrain context [options]`
-Consolidates all markdown documents from `.devbrain/memory/` and formats them into a single-block text prompt designed for AI assistant consumption.
+### `devbrain search <query> [options]`
+Performs local semantic search across the project memories using cosine similarity.
+
+*   `-t, --top <number>`: Maximum number of search results to display (defaults to `8`).
+*   `-h, --help`: Displays help info for the search command.
+
+### `devbrain context [query]`
+Consolidates project memories and formats them into a single consolidated prompt. If a `query` parameter is provided, performs semantic retrieval to compile context specific to that topic (filtering out file lists and timeline summaries).
 
 *   `-h, --help`: Displays help info for the context consolidation command.
+
+---
+
+## 📶 Offline-First Design & Embedding Cache
+
+DevBrain runs entirely on your local machine to protect code privacy:
+1. **First Execution:** On the first execution of `devbrain learn`, the CLI downloads the lightweight, ONNX-optimized `all-MiniLM-L6-v2-ONNX` embedding model (~120MB) from Hugging Face.
+2. **Global Model Cache:** The downloaded files are cached globally in `~/.devbrain/models/`.
+3. **Subsequent Executions:** All subsequent indexings, searches, and context queries load the model directly from your local cache folder. **No internet connection is required.**
+
+---
+
+## 🔄 Upgrading from v0.2
+
+Upgrading from v0.2 is fully backward compatible:
+- You do not need to delete `.devbrain` or re-initialize.
+- Running `devbrain learn` under v0.3.0 will automatically detect if the vector database is missing and build it from the existing memory files.
 
 ---
 

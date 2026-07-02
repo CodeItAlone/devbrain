@@ -10,6 +10,7 @@ import { CommandPipeline } from '../pipeline/command.pipeline.js';
 
 interface ContextArgs {
   raw?: boolean;
+  query?: string;
 }
 
 /**
@@ -31,10 +32,50 @@ export class ContextCommand extends CommandPipeline<ContextArgs> {
     // No-op: context built from memory files
   }
 
-  protected async executeService(context: CommandContext, _args: ContextArgs): Promise<string> {
-    const memoryDir = join(context.cwd, context.config!.memory.directory);
-    const contextService = new ContextService(this.fsService);
-    return await contextService.buildContext(memoryDir);
+  protected async executeService(context: CommandContext, args: ContextArgs): Promise<string> {
+    if (args.query) {
+      const dbPath = join(context.cwd, DEVBRAIN_DIR_NAME, 'vectors.db');
+      
+      // Fallback if vectors.db doesn't exist yet
+      if (!(await this.fsService.exists(dbPath))) {
+        this.logger.warn('Vector store database not found. Returning full repository context. Run "devbrain learn" to initialize the vector database.');
+        const memoryDir = join(context.cwd, context.config!.memory.directory);
+        const contextService = new ContextService(this.fsService);
+        return await contextService.buildContext(memoryDir);
+      }
+
+      // Initialize retriever components
+      const { SQLiteVectorStore, TransformersProvider, RankingEngine, SemanticRetriever, ContextBuilder } = await import('@devbrain/core');
+      const vectorStore = new SQLiteVectorStore(dbPath);
+      try {
+        const embeddingProvider = new TransformersProvider();
+        const rankingEngine = new RankingEngine(context.config!);
+        const retriever = new SemanticRetriever(vectorStore, embeddingProvider, rankingEngine, context.config!);
+        const contextBuilder = new ContextBuilder();
+
+        // Retrieve recent commits from history
+        let recentCommits: any[] = [];
+        try {
+          const { HistoryManager } = await import('@devbrain/core');
+          const historyManager = new HistoryManager(context.cwd, this.fsService);
+          const history = await historyManager.loadHistory();
+          if (history && history.commits) {
+            recentCommits = history.commits.map(c => ({ hash: c.commitHash, message: c.commitMessage }));
+          }
+        } catch {}
+
+        const topK = context.config?.semanticSearch?.topK ?? 8;
+        const results = await retriever.searchRelevantMemories(args.query, topK, recentCommits);
+        
+        return contextBuilder.buildContext(args.query, results);
+      } finally {
+        vectorStore.close();
+      }
+    } else {
+      const memoryDir = join(context.cwd, context.config!.memory.directory);
+      const contextService = new ContextService(this.fsService);
+      return await contextService.buildContext(memoryDir);
+    }
   }
 
   protected async writeOutput(

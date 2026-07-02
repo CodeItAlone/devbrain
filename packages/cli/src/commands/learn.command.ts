@@ -1,4 +1,5 @@
-import { join } from 'node:path';
+import { join, relative } from 'node:path';
+import { unlink, readdir } from 'node:fs/promises';
 import {
   CommandContext,
   ValidationError,
@@ -16,6 +17,9 @@ import {
   MemoryService,
   ContextService,
   RepositoryScanner,
+  SQLiteVectorStore,
+  TransformersProvider,
+  VectorIndexer,
 } from '@devbrain/core';
 import { CommandPipeline } from '../pipeline/command.pipeline.js';
 import ora from 'ora';
@@ -24,6 +28,7 @@ interface LearnArgs {
   force?: boolean;
   silent?: boolean;
   respectGitignore?: boolean;
+  repair?: boolean;
 }
 
 /**
@@ -87,7 +92,6 @@ export class LearnCommand extends CommandPipeline<LearnArgs> {
 
   protected async executeService(context: CommandContext, args: LearnArgs): Promise<any> {
     const isSilent = !!args.silent;
-    const forceFull = !!args.force;
 
     // 1. Acquire Lock
     const acquired = await this.lockManager.acquireLock();
@@ -113,34 +117,55 @@ export class LearnCommand extends CommandPipeline<LearnArgs> {
         this.stats.commitMessage = await this.gitService.getCommitMessage(currentCommit);
       }
 
-      // Check if memory.json exists
       const memoryExists = await this.fsService.exists(join(context.cwd, DEVBRAIN_DIR_NAME, 'memory.json'));
 
-      let analysis;
+      // Phase 1: Synchronize Project Memory
+      await this.synchronizeProjectMemory(
+        context,
+        args,
+        spinner,
+        isGitRepo,
+        lastCommit,
+        currentCommit,
+        memoryExists
+      );
 
-      // 3. Determine Incremental vs Full
+      // Phase 2: Synchronize Vector Index
+      await this.synchronizeVectorIndex(context, args, spinner);
+
+      if (spinner) {
+        spinner.succeed(`Successfully learned changes (${this.stats.strategy} scan, ${this.stats.filesCount} files).`);
+      }
+      await this.loggerService.success(`Completed learning session: ${this.stats.strategy} scan.`, isSilent ? 'git-hook.log' : 'devbrain.log');
+    } finally {
+      // 3. Release Lock
+      await this.lockManager.releaseLock();
+    }
+  }
+
+  private async synchronizeProjectMemory(
+    context: CommandContext,
+    args: LearnArgs,
+    spinner: any,
+    isGitRepo: boolean,
+    lastCommit: string | null,
+    currentCommit: string | null,
+    memoryExists: boolean
+  ): Promise<void> {
+    const forceFull = !!args.force;
+
+    if (forceFull || !isGitRepo || !lastCommit || !memoryExists || lastCommit !== currentCommit) {
+      let analysis;
       if (forceFull || !isGitRepo || !lastCommit || !memoryExists) {
-        // Run Full Scan
         this.stats.strategy = 'full';
         if (spinner) spinner.text = 'Scanning entire project (full scan)...';
         analysis = await this.memoryEngine.runFullScan();
       } else {
-        // Check if HEAD has actually changed
-        if (lastCommit === currentCommit) {
-          if (spinner) {
-            spinner.succeed('Project memory is already up to date with HEAD commit.');
-          }
-          await this.lockManager.releaseLock();
-          return { skipped: true, reason: 'up-to-date' };
-        }
-
-        // Run Incremental Scan
         this.stats.strategy = 'incremental';
         if (spinner) spinner.text = 'Running incremental git-diff analysis...';
 
         const changes = await this.gitService.getChangedFiles(lastCommit, currentCommit || 'HEAD');
         
-        // Scan directory files for context mapping
         const scanner = new RepositoryScanner(this.fsService);
         const allFiles = await scanner.scan(context.cwd, {
           ignore: context.config?.scanner.ignore,
@@ -155,7 +180,6 @@ export class LearnCommand extends CommandPipeline<LearnArgs> {
           ...changes.renamed.map((r: { from: string; to: string }) => r.from),
         ];
         
-        // Resolve blast radius dependencies
         const resolver = new DependencyResolver();
         const { resolvedFiles, isFullScan } = resolver.resolveBlastRadius(allChanged, allFiles);
 
@@ -175,7 +199,6 @@ export class LearnCommand extends CommandPipeline<LearnArgs> {
 
       this.stats.filesCount = analysis.files.length;
 
-      // 4. Update documentation formats if enabled
       const memoryDir = join(context.cwd, context.config!.memory.directory);
       if (context.config!.documentation_generation !== false) {
         if (spinner) spinner.text = 'Regenerating project memory documentation...';
@@ -187,7 +210,6 @@ export class LearnCommand extends CommandPipeline<LearnArgs> {
         await this.contextService.generateContext(analysis, memoryDir);
       }
 
-      // 5. Append commit entry to history
       if (isGitRepo && currentCommit) {
         const historyEntry: CommitHistoryEntry = {
           commitHash: currentCommit,
@@ -198,14 +220,136 @@ export class LearnCommand extends CommandPipeline<LearnArgs> {
         };
         await this.historyManager.addCommitEntry(historyEntry);
       }
-
+    } else {
       if (spinner) {
-        spinner.succeed(`Successfully learned changes (${this.stats.strategy} scan, ${this.stats.filesCount} files).`);
+        this.logger.debug('Git HEAD unchanged. Skipping project repository scan.');
       }
-      await this.loggerService.success(`Completed learning session: ${this.stats.strategy} scan.`, isSilent ? 'git-hook.log' : 'devbrain.log');
+      this.stats.strategy = 'skipped';
+    }
+  }
+
+  private async synchronizeVectorIndex(
+    context: CommandContext,
+    args: LearnArgs,
+    spinner: any
+  ): Promise<void> {
+    const isSilent = !!args.silent;
+    const dbPath = join(context.cwd, DEVBRAIN_DIR_NAME, 'vectors.db');
+    const vectorsExist = await this.fsService.exists(dbPath);
+
+    if (args.repair || !vectorsExist) {
+      if (spinner) {
+        spinner.text = args.repair
+          ? 'Repairing vector index (clearing existing)...'
+          : 'Initializing new vector index...';
+      }
+      try {
+        if (await this.fsService.exists(dbPath)) {
+          await unlink(dbPath);
+        }
+      } catch {}
+    }
+
+    if (spinner) spinner.text = 'Updating local vector index...';
+    const vectorStore = new SQLiteVectorStore(dbPath);
+    try {
+      const embeddingProvider = new TransformersProvider();
+      const indexer = new VectorIndexer(vectorStore, embeddingProvider);
+
+      const filesToIndex = new Set<string>();
+
+      const projectMemoryPath = join(context.cwd, DEVBRAIN_DIR_NAME, 'PROJECT_MEMORY.md');
+      if (await this.fsService.exists(projectMemoryPath)) {
+        filesToIndex.add(projectMemoryPath);
+      }
+
+      const customNotesPath = join(context.cwd, DEVBRAIN_DIR_NAME, 'custom_notes.md');
+      if (await this.fsService.exists(customNotesPath)) {
+        filesToIndex.add(customNotesPath);
+      }
+
+      const memoryDir = join(context.cwd, context.config!.memory.directory);
+      if (await this.fsService.exists(memoryDir)) {
+        try {
+          const files = await readdir(memoryDir);
+          for (const file of files) {
+            if (file.endsWith('.md') || file.endsWith('.markdown')) {
+              // Ignore noisy timeline / git logs
+              if (file.toLowerCase().includes('timeline')) {
+                continue;
+              }
+              filesToIndex.add(join(memoryDir, file));
+            }
+          }
+        } catch {}
+      }
+
+      for (const filePath of filesToIndex) {
+        const memoryId = relative(join(context.cwd, DEVBRAIN_DIR_NAME), filePath).replace(/\\/g, '/');
+        await indexer.indexMemory(filePath, memoryId);
+      }
+    } catch (err: any) {
+      if (!args.repair && vectorsExist) {
+        if (spinner) spinner.text = 'Corrupted index detected, performing automatic repair...';
+        try {
+          vectorStore.close();
+
+          if (await this.fsService.exists(dbPath)) {
+            await unlink(dbPath);
+          }
+          const repairStore = new SQLiteVectorStore(dbPath);
+          try {
+            const embeddingProvider = new TransformersProvider();
+            const indexer = new VectorIndexer(repairStore, embeddingProvider);
+
+            const filesToIndex = new Set<string>();
+            const projectMemoryPath = join(context.cwd, DEVBRAIN_DIR_NAME, 'PROJECT_MEMORY.md');
+            if (await this.fsService.exists(projectMemoryPath)) {
+              filesToIndex.add(projectMemoryPath);
+            }
+
+            const customNotesPath = join(context.cwd, DEVBRAIN_DIR_NAME, 'custom_notes.md');
+            if (await this.fsService.exists(customNotesPath)) {
+              filesToIndex.add(customNotesPath);
+            }
+
+            const memoryDir = join(context.cwd, context.config!.memory.directory);
+            if (await this.fsService.exists(memoryDir)) {
+              try {
+                const files = await readdir(memoryDir);
+                for (const file of files) {
+                  if (file.endsWith('.md') || file.endsWith('.markdown')) {
+                    // Ignore noisy timeline / git logs
+                    if (file.toLowerCase().includes('timeline')) {
+                      continue;
+                    }
+                    filesToIndex.add(join(memoryDir, file));
+                  }
+                }
+              } catch {}
+            }
+
+            for (const filePath of filesToIndex) {
+              const memoryId = relative(join(context.cwd, DEVBRAIN_DIR_NAME), filePath).replace(/\\/g, '/');
+              await indexer.indexMemory(filePath, memoryId);
+            }
+          } finally {
+            repairStore.close();
+          }
+        } catch (repairErr: any) {
+          await this.loggerService.error(`Vector index automatic repair failed: ${repairErr.message || repairErr}`, isSilent ? 'git-hook.log' : 'devbrain.log');
+          if (!isSilent) {
+            this.logger.warn(`Vector index update failed: ${repairErr.message || repairErr}`);
+          }
+        }
+      } else {
+        await this.loggerService.error(`Vector index build error: ${err.message || err}`, isSilent ? 'git-hook.log' : 'devbrain.log');
+        if (!isSilent) {
+          this.logger.warn(`Vector index update failed (graceful fallback): ${err.message || err}`);
+        }
+      }
     } finally {
-      // 6. Release Lock
-      await this.lockManager.releaseLock();
+      vectorStore.close();
     }
   }
 

@@ -7,6 +7,7 @@ import { ContextCommand } from './commands/context.command.js';
 import { StatusCommand } from './commands/status.command.js';
 import { HistoryCommand } from './commands/history.command.js';
 import { HookCommand } from './commands/hook.command.js';
+import { SearchCommand } from './commands/search.command.js';
 import { DEVBRAIN_VERSION } from '@devbrain/shared';
 
 const program = new Command();
@@ -34,6 +35,7 @@ program
   .option('-f, --force', 'Force a full scanned refresh of memory')
   .option('--silent', 'Execute silently in the background')
   .option('--no-gitignore', 'Skip matching .gitignore exclude rules')
+  .option('--repair', 'Repair and rebuild vector index from scratch')
   .action(async (options) => {
     const cwd = process.cwd();
     const cmd = new LearnCommand();
@@ -41,18 +43,30 @@ program
       force: !!options.force,
       silent: !!options.silent,
       respectGitignore: options.gitignore !== false,
+      repair: !!options.repair,
     });
   });
 
 program
-  .command('context')
+  .command('context [query]')
   .description('Consolidate persistent documentation memory into an optimized prompt context')
   .option('-d, --debug', 'Enable verbose debug outputs and print stack traces')
   .option('-r, --raw', 'Omit debug and formatting statistics in output')
-  .action(async (options) => {
+  .action(async (query, options) => {
     const cwd = process.cwd();
     const cmd = new ContextCommand();
-    await cmd.execute(cwd, !!options.debug, { raw: !!options.raw });
+    await cmd.execute(cwd, !!options.debug, { raw: !!options.raw, query });
+  });
+
+program
+  .command('search <query>')
+  .description('Semantically search repository memories for relevant information')
+  .option('-d, --debug', 'Enable verbose debug outputs and print stack traces')
+  .option('--top <number>', 'Number of top results to return', (v) => parseInt(v, 10))
+  .action(async (query, options) => {
+    const cwd = process.cwd();
+    const cmd = new SearchCommand();
+    await cmd.execute(cwd, !!options.debug, { query, top: options.top });
   });
 
 program

@@ -26,6 +26,17 @@ export interface DevBrainConfig {
   context_generation?: boolean;
   verbose_logging?: boolean;
   safe_mode?: boolean;
+  semanticSearch?: {
+    topK?: number;
+    minSimilarity?: number;
+    weights?: {
+      semantic?: number;
+      recency?: number;
+      importance?: number;
+      gitFrequency?: number;
+    };
+    boosts?: Record<string, number>;
+  };
 }
 
 /**
